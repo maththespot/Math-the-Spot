@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order from Math the Spot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      color: var(--text-color);
+      background: var(--bg-main);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-main);
+      background-image: url("Assets/bg.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .order-site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(230, 230, 250, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+      color: var(--text-color);
+    }
+
+    .order-navbar {
+      display: flex;
+      width: min(1200px, calc(100% - 2rem));
+      min-height: 80px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 0 auto;
+    }
+
+    .order-site-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .order-site-logo img {
+      display: block;
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+
+    .order-site-logo h2 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2vw, 2rem);
+    }
+
+    .order-nav-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .order-nav-links a {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: var(--bg-main);
+      color: var(--text-color);
+      text-decoration: none;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .order-nav-links a:hover,
+    .order-nav-links a[aria-current="page"] {
+      border-color: var(--text-color);
+      transform: translateY(-1px);
+    }
+
+    .order-footer {
+      margin-top: auto;
+      padding: 20px 16px;
+      background: var(--accent-color);
+      color: #212d60;
+      text-align: center;
+    }
+
+    .order-footer h2,
+    .order-footer p {
+      margin: 0;
+    }
+
+    .order-footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      margin: 12px 0 20px;
+    }
+
+    .order-footer-links p {
+      overflow-wrap: anywhere;
+    }
+
+    .main {
+      display: grid;
+      min-height: calc(100vh - 80px);
+      min-height: calc(100svh - 80px);
+      place-items: center;
+      padding: 24px;
+    }
+
+    .main.hidden {
+      display: none;
+    }
+
+    .main_con {
+      display: flex;
+      width: min(100%, 800px);
+      flex-direction: column;
+      align-items: center;
+      padding: clamp(28px, 6vw, 48px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      background: var(--panel-color);
+      box-shadow: 0 14px 20px rgba(40, 40, 40, 0.08);
+      text-align: center;
+    }
+
+    .main_con h1 {
+      margin: 0 0 20px;
+      color: var(--text-color);
+      font-size: clamp(2rem, 7vw, 3rem);
+      line-height: 1.15;
+    }
+
+    .main_con .brand-logo {
+      width: min(180px, 55%);
+      height: auto;
+      max-height: 150px;
+      object-fit: contain;
+    }
+
+    .main_con p {
+      margin: 20px 0 24px;
+      color: var(--text-muted);
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    .proceed_btn {
+      width: min(100%, 220px);
+      min-height: 48px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent-glow);
+      color: var(--text-color);
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 650;
+      cursor: pointer;
+      transition: background-color 160ms ease, transform 160ms ease;
+    }
+
+    .proceed_btn:hover {
+      background: var(--accent-color);
+    }
+
+    .proceed_btn:active {
+      transform: translateY(1px);
+    }
+
+    .proceed_btn:focus-visible,
+    .order-form button:focus-visible {
+      outline: 3px solid var(--text-color);
+      outline-offset: 3px;
+    }
+
+    .page {
+      display: none;
+      width: min(calc(100% - 32px), 960px);
+      margin: 40px auto;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 14px 24px rgba(40, 40, 40, 0.08);
+    }
+
+    .page.visible {
+      display: block;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 28px 36px;
+      background: rgba(178, 201, 255, 0.25);
+    }
+
+    .brand-logo {
+      display: block;
+      width: 82px;
+      height: 82px;
+      flex: 0 0 82px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: #212d60;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--text-color);
+      font-size: clamp(1.7rem, 5vw, 2.2rem);
+      line-height: 1.15;
+    }
+
+    .intro {
+      margin: 8px 0 0;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .order-form {
+      padding: 32px 36px 36px;
+    }
+
+    .form-section {
+      margin-bottom: 28px;
+    }
+
+    .product-fieldset {
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .product-fieldset legend {
+      margin-bottom: 12px;
+      color: var(--text-color);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .product-option {
+      display: flex;
+      min-height: 132px;
+      align-items: center;
+      gap: 16px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      cursor: pointer;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .product-option:has(input:checked) {
+      border-color: var(--accent-glow);
+      box-shadow: 0 0 0 3px rgba(169, 229, 157, 0.35);
+    }
+
+    .product-option:focus-within {
+      outline: 3px solid rgba(1, 1, 1, 0.2);
+      outline-offset: 2px;
+    }
+
+    .product-option input {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      accent-color: #212d60;
+    }
+
+    .product-image {
+      display: block;
+      width: 156px;
+      height: 100px;
+      flex: 0 0 156px;
+      border-radius: 7px;
+      background: var(--bg-main);
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .product-option-image {
+      display: block;
+      width: 240px;
+      height: 300px;
+      flex: 0 0 96px;
+      object-fit: contain;
+    }
+
+    .product-details {
+      display: grid;
+      gap: 6px;
+    }
+
+    .product-name {
+      color: var(--text-color);
+      font-weight: 700;
+    }
+
+    .product-description {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px 18px;
+    }
+
+    .field {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field-wide {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      color: var(--text-color);
+      font-size: 0.92rem;
+      font-weight: 650;
+    }
+
+    .optional {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 400;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 12px;
+      border: 1px solid rgba(1, 1, 1, 0.2);
+      border-radius: 12px;
+      background-color: #fff;
+      color: var(--text-color);
+      font: inherit;
+    }
+
+    .field textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--text-color);
+      outline: 3px solid rgba(178, 201, 255, 0.55);
+    }
+
+    .field-help {
+      margin: -2px 0 0;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+    }
+
+    .honeypot {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .order-form button {
+      display: block;
+      width: 100%;
+      min-height: 50px;
+      margin-top: 26px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent-glow);
+      color: var(--text-color);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 160ms ease, transform 160ms ease;
+    }
+
+    .order-form button:hover {
+      background: var(--accent-color);
+    }
+
+    .order-form button:disabled {
+      opacity: 0.75;
+      cursor: wait;
+    }
+
+    .order-form button:active {
+      transform: translateY(1px);
+    }
+
+    .processing {
+      display: grid;
+      min-height: 100vh;
+      min-height: 100svh;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .processing.hidden {
+      display: none;
+    }
+
+    .processing_con {
+      display: flex;
+      width: min(100%, 520px);
+      flex-direction: column;
+      align-items: center;
+      padding: clamp(28px, 6vw, 48px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      background: var(--panel-color);
+      box-shadow: 0 14px 20px rgba(40, 40, 40, 0.08);
+      text-align: center;
+    }
+
+    .processing_con h1 {
+      margin: 0 0 20px;
+      color: var(--text-color);
+      font-size: clamp(2rem, 7vw, 3rem);
+      line-height: 1.15;
+    }
+
+    .processing_con p {
+      margin: 20px 0 24px;
+      color: var(--text-muted);
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      line-height: 1.6;
+    }
+
+    .processing-spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid rgba(1, 1, 1, 0.1);
+      border-top-color: var(--text-color);
+      border-radius: 50%;
+      animation: processing-spin 800ms linear infinite;
+    }
+
+    @keyframes processing-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      .order-navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 0;
+      }
+
+      .order-nav-links {
+        width: 100%;
+        justify-content: space-between;
+        gap: 4px;
+      }
+
+      .order-nav-links a {
+        min-height: 38px;
+        padding: 0.45rem 0.65rem;
+        font-size: 0.9rem;
+      }
+
+      .main {
+        min-height: calc(100vh - 138px);
+        min-height: calc(100svh - 138px);
+      }
+
+      .page {
+        margin: 16px auto;
+        border-radius: 14px;
+      }
+
+      .brand {
+        gap: 14px;
+        padding: 22px 20px;
+      }
+
+      .brand-logo {
+        width: 62px;
+        height: 62px;
+        flex-basis: 62px;
+      }
+
+      .order-form {
+        padding: 24px 20px 26px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .field-wide {
+        grid-column: auto;
+      }
+
+      .product-option {
+        gap: 11px;
+        padding: 10px;
+      }
+
+      .product-option-image {
+        width: 72px;
+        height: 88px;
+        flex-basis: 72px;
+      }
+
+      .product-image {
+        width: 105px;
+        height: 84px;
+        flex-basis: 105px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+    <header class="order-site-header site-header">
+      <nav class="order-navbar navbar container" aria-label="Main navigation">
+        <a class="order-site-logo logo" href="Index.html">
+          <img src="Assets/logo.png" alt="">
+          <h2>Math the Spot</h2>
+        </a>
+        <ul class="order-nav-links nav-links">
+          <li><a class="nav-btn" href="Index.html">Home</a></li>
+          <li><a class="nav-btn" href="course.html">Course</a></li>
+          <li><a class="nav-btn" href="about.html">About Us</a></li>
+          <li><a class="nav-btn active" href="order.html" aria-current="page">Order</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="main">
+      <div class="main_con">
+        <h1>Order Form</h1>
+            <img class="brand-logo" src="Assets/logo.png" alt="Math the Spot">
+          <h3> Data Privacy Act 2016 </h3>
+          <p>
+            In accordance with Republic Act No. 10173 (Data Privacy Act of 2012), our group is committed to protecting your personal information.
+            This order form will collect your name, contact details, delivery/pickup location, and order details. The information gathered will be used solely to process, fulfill, and deliver your order.
+            All information collected will be kept strictly confidential and will only be accessed by our team members for order fulfillment and course requirements. Your personal data will be securely deleted once all orders have been completed and our academic requirement has been fulfilled.
+            Providing your information is voluntary; however, it is necessary for us to process your purchase. You may request the correction or deletion of your personal information at any time.
+            By selecting "I Agree" and submitting this form, you confirm that you have read and understood this Data Privacy Notice and voluntarily consent to the collection and use of your information for the purposes stated above.
+        </p>
+        <button class="proceed_btn" id="consent-button" type="button">I consent</button>
+      </div>
+    </section>
+
+    <div class="page">
+    <header class="brand">
+      <img class="brand-logo" src="Assets/logo.png" alt="Math the Spot">
+      <div>
+        <p class="eyebrow">Math the Spot</p>
+        <h1>Place your order</h1>
+        <p class="intro">Fill in your details and we’ll get your order ready.</p>
+      </div>
+    </header>
+
+    <form
+      id="fb-form"
+      class="order-form"
+      action="https://script.google.com/macros/s/AKfycbxQDIshtOf7yZ52nF8iX0Yf6IU8no9j93hrCwpibokwaROG5ODABKeawpXCsayfv67GOw/exec"
+      method="POST"
+    >
+      <section class="form-section" aria-labelledby="product-heading">
+        <fieldset class="product-fieldset">
+          <legend id="product-heading">Choose a product</legend>
+          <label class="product-option">
+            <input
+              type="radio"
+              name="product"
+              value="Calculus Bookmark"
+              required
+            >
+            <img class="product-option-image" src="Assets/prod%20option.svg" alt="Diff Cal Apex bookmark">
+            <span class="product-details">
+              <span class="product-name">Diff Cal Apex (Deriving Me Crazy)</span>
+              <span class="product-description">Calculus bookmark</span>
+            </span>
+          </label>
+        </fieldset>
+      </section>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="fb-name">Name</label>
+          <input type="text" id="fb-name" name="name" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="fb-email">Email</label>
+          <input type="email" id="fb-email" name="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="fb-phone">Phone</label>
+          <input type="tel" id="fb-phone" name="phone" required autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="fb-quantity">Quantity</label>
+          <input type="number" id="fb-quantity" name="quantity" required min="1" max="100">
+        </div>
+        <div class="field">
+          <label for="fb-needed_by">Needed by</label>
+          <input type="date" id="fb-needed_by" name="needed_by" required>
+        </div>
+        <div class="field">
+          <label for="fb-fulfilment">Shipping method</label>
+          <select id="fb-fulfilment" name="fulfilment" required>
+            <option value="">Choose a shipping method</option>
+            <option value="Delivery 1">J&amp;T Express</option>
+            <option value="Delivery 2">Lalamove</option>
+            <option value="Pick-up">Pick-up (PUP - Sta. Mesa Campus)</option>
+          </select>
+        </div>
+        <div class="field field-wide">
+          <label for="fb-address">Delivery address <span class="optional">(optional)</span></label>
+          <textarea
+            id="fb-address"
+            name="address"
+            autocomplete="street-address"
+            aria-describedby="fb-address-help"
+            rows="3"
+          ></textarea>
+          <p class="field-help" id="fb-address-help">Only needed for delivery.</p>
+        </div>
+        <div class="field field-wide">
+          <label for="fb-mode_of_payment">Mode of payment</label>
+          <select id="fb-mode_of_payment" name="mode_of_payment" required>
+            <option value="">Choose a payment method</option>
+            <option value="gcash">GCash</option>
+            <option value="maya">Maya</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="honeypot" aria-hidden="true">
+        <label for="fb-honey">Leave this field empty</label>
+        <input type="text" id="fb-honey" name="_honey" tabindex="-1" autocomplete="off">
+      </div>
+      <input type="hidden" name="_subject" value="Order Request">
+      <button type="submit" id="submit-order">Send order request</button>
+    </form>
+  </div>
+    <section class="processing hidden" id="processing-section" aria-live="polite" aria-labelledby="processing-heading">
+      <div class="processing_con">
+        <span class="processing-spinner" aria-hidden="true"></span>
+        <h1 id="processing-heading">Processing your order</h1>
+        <p>Your order request is being submitted. Please wait.</p>
+      </div>
+    </section>
+
+    <footer class="order-footer footer">
+      <h2>Follow Us On:</h2>
+      <div class="footer-row">
+        <div>
+          <i class="fa-brands fa-facebook" aria-hidden="true"></i>
+          <span><h4>Math the Spot</h4></span>
+        </div>
+        <div>
+          <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
+          <span><h4>@maththespot</h4></span>
+        </div>
+        <div>
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+          <span><h4>@math.the.spot</h4></span>
+        </div>
+      </div>
+      <p>&copy; 2026 Math the Spot. All rights reserved.</p>
+    </footer>
+
+  <script>
+    const consentButton = document.getElementById("consent-button");
+    const consentScreen = document.querySelector(".main");
+    const orderPage = document.querySelector(".page");
+    const orderForm = document.getElementById("fb-form");
+    const processingSection = document.getElementById("processing-section");
+    const submitButton = document.getElementById("submit-order");
+
+    consentButton.addEventListener("click", () => {
+      consentScreen.classList.add("hidden");
+      orderPage.classList.add("visible");
+      document.getElementById("fb-name").focus();
+    });
+
+    orderForm.addEventListener("submit", (event) => {
+      if (!orderForm.checkValidity()) {
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Submitting order...";
+      orderPage.classList.remove("visible");
+      processingSection.classList.remove("hidden");
+    });
+  </script>
+
+</body>
+</html>
